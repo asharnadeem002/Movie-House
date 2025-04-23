@@ -1,40 +1,106 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/pages/api-reference/create-next-app).
+Movie House
+Overview
+Movie House is a web application built with Next.js that allows users to browse, search, and view details about movies, genres, and directors. The application uses a JSON file (data.json) as its data source and implements various Next.js features, including static site generation (SSG), server-side rendering (SSR), client-side rendering (CSR) with useSWR, dynamic routes, and catch-all routes. The UI is styled with Tailwind CSS for a modern, responsive design.
+Features
 
-## Getting Started
+Home Page: Displays trending movies with navigation to all movies and genres.
+Movies Page: Lists all movies with genre filtering and links to individual movie details.
+Movie Details: Shows movie information with a nested route for director details.
+Genres Page: Lists genres and allows filtering movies by genre (SSR).
+Directors Page: Displays director details and their movies (CSR with useSWR).
+Help Pages: Includes a base help page and dynamic sections (FAQs, Contact, Privacy) via catch-all routes.
+Custom 404 Page: User-friendly error page with a link to the home page.
 
-First, run the development server:
+Prerequisites
 
-```bash
+Node.js (v16 or higher)
+npm or yarn
+
+Setup Instructions
+
+Clone the Repository (if applicable):
+git clone <repository-url>
+cd movie-house
+
+
+Install Dependencies:
+npm install
+
+This installs Next.js, swr (for CSR), and other dependencies listed in package.json.
+
+Ensure data.json is Present:
+
+Place the data.json file in the root directory of the project. This file contains the movie, genre, and director data.
+
+
+Add Tailwind CSS (if not already configured):
+
+Ensure Tailwind CSS is set up by including the following in styles/globals.css:@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+Verify that tailwind.config.js includes:module.exports = {
+  content: [
+    './pages/**/*.{js,ts,jsx,tsx}',
+    './components/**/*.{js,ts,jsx,tsx}',
+  ],
+  theme: {
+    extend: {},
+  },
+  plugins: [],
+}
+
+
+
+
+
+How to Run the Project
+
+Development Mode:
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can start editing the page by modifying `pages/index.js`. The page auto-updates as you edit the file.
+This starts the development server at http://localhost:3000.
+Open your browser and navigate to http://localhost:3000 to view the application.
 
-[API routes](https://nextjs.org/docs/pages/building-your-application/routing/api-routes) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.js`.
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/pages/building-your-application/routing/api-routes) instead of React pages.
+Production Build:
+npm run build
 
-This project uses [`next/font`](https://nextjs.org/docs/pages/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
 
-## Learn More
+This generates an optimized production build in the .next directory.
 
-To learn more about Next.js, take a look at the following resources:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn-pages-router) - an interactive Next.js tutorial.
+Start Production Server:
+npm run start
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
 
-## Deploy on Vercel
+This runs the production build, typically at http://localhost:3000.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/pages/building-your-application/deploying) for more details.
+
+Project Structure
+movie-house/
+├── data.json              # Movie, genre, and director data
+├── pages/                 # Next.js pages
+│   ├── api/               # API routes for data fetching
+│   ├── movies/            # Dynamic and nested movie routes
+│   ├── genres/            # Genre-related pages
+│   ├── help/              # Help pages with catch-all routes
+│   ├── 404.js             # Custom 404 page
+│   ├── directors.js       # Directors page (CSR)
+│   ├── genres.js          # Genres page (SSR)
+│   ├── index.js           # Home page
+│   └── movies.js          # Movies page
+├── styles/                # CSS styles
+│   └── globals.css        # Global styles with Tailwind CSS
+├── tailwind.config.js     # Tailwind CSS configuration
+└── package.json           # Project dependencies and scripts
+
+Notes
+
+The application uses Incremental Static Regeneration (ISR) with a revalidation period of 60 seconds for static pages.
+Ensure the data.json file is correctly formatted and placed in the root directory to avoid runtime errors.
+For production deployment, consider hosting on platforms like Vercel, which is optimized for Next.js applications.
+
