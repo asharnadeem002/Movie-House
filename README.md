@@ -19,7 +19,7 @@ npm or yarn
 Setup Instructions
 
 Clone the Repository (if applicable):
-git clone <repository-url>
+git clone <https://github.com/asharnadeem002/Movie-House.git>
 cd movie-house
 
 
