@@ -6,9 +6,20 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "setup-db": "node scripts/setup-db.js",
+    "verify-db": "node scripts/verify-db.js",
+    "fix-auth": "node scripts/fix-auth.js",
+    "check-mysql": "node scripts/check-mysql.js"
   },
   "dependencies": {
+    "@emotion/react": "^11.11.3",
+    "@emotion/styled": "^11.11.0",
+    "@mui/icons-material": "^5.17.1",
+    "@mui/material": "^5.15.7",
+    "bcrypt": "^5.1.1",
+    "dotenv": "^16.3.2",
+    "mysql2": "^3.9.1",
     "next": "15.3.1",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",

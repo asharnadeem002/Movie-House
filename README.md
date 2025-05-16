@@ -1,106 +1,171 @@
-Movie House
-Overview
-Movie House is a web application built with Next.js that allows users to browse, search, and view details about movies, genres, and directors. The application uses a JSON file (data.json) as its data source and implements various Next.js features, including static site generation (SSG), server-side rendering (SSR), client-side rendering (CSR) with useSWR, dynamic routes, and catch-all routes. The UI is styled with Tailwind CSS for a modern, responsive design.
-Features
+# Movie House
 
-Home Page: Displays trending movies with navigation to all movies and genres.
-Movies Page: Lists all movies with genre filtering and links to individual movie details.
-Movie Details: Shows movie information with a nested route for director details.
-Genres Page: Lists genres and allows filtering movies by genre (SSR).
-Directors Page: Displays director details and their movies (CSR with useSWR).
-Help Pages: Includes a base help page and dynamic sections (FAQs, Contact, Privacy) via catch-all routes.
-Custom 404 Page: User-friendly error page with a link to the home page.
+A modern web application for exploring movies, directors, and genres using Next.js and MySQL.
 
-Prerequisites
+## Features
 
-Node.js (v16 or higher)
-npm or yarn
+- Browse movies with detailed information
+- Filter movies by genre
+- Search for movies by title
+- Explore directors and their filmographies
+- Sort and filter by different criteria
+- Dark/Light mode theme toggle with persistence
+- Responsive UI using Material UI components
 
-Setup Instructions
+## Technical Stack
 
-Clone the Repository (if applicable):
-git clone <https://github.com/asharnadeem002/Movie-House.git>
+- **Frontend**: Next.js, React, Material UI
+- **Backend**: Next.js API Routes
+- **Database**: MySQL
+- **State Management**: React Context API
+- **Styling**: Material UI and CSS
+
+## Prerequisites
+
+- Node.js (v14+ recommended)
+- MySQL Server installed and running
+- npm or yarn
+
+## Setup Instructions
+
+### 1. Clone the repository
+
+```bash
+git clone <repository-url>
 cd movie-house
+```
 
+### 2. Install dependencies
 
-Install Dependencies:
+```bash
 npm install
+```
 
-This installs Next.js, swr (for CSR), and other dependencies listed in package.json.
+### 3. Configure MySQL Database
 
-Ensure data.json is Present:
+Ensure MySQL is running on your system. The application is configured to connect to MySQL with the following default credentials:
 
-Place the data.json file in the root directory of the project. This file contains the movie, genre, and director data.
+- Host: localhost
+- Port: 3306
+- Username: root
+- Password: Password123
+- Database: moviehouse
 
+You can customize these settings by creating a `.env.local` file in the root directory with the following content:
 
-Add Tailwind CSS (if not already configured):
+```
+MYSQL_HOST=localhost
+MYSQL_PORT=3306
+MYSQL_USERNAME=root
+MYSQL_PASSWORD=Password123
+MYSQL_DATABASE=moviehouse
+```
 
-Ensure Tailwind CSS is set up by including the following in styles/globals.css:@tailwind base;
-@tailwind components;
-@tailwind utilities;
+### 4. Fix MySQL Authentication (for MySQL 8+)
 
+If you're using MySQL 8 or later, you may need to update the authentication method:
 
-Verify that tailwind.config.js includes:module.exports = {
-  content: [
-    './pages/**/*.{js,ts,jsx,tsx}',
-    './components/**/*.{js,ts,jsx,tsx}',
-  ],
-  theme: {
-    extend: {},
-  },
-  plugins: [],
-}
+```bash
+npm run fix-auth
+```
 
+This will alter the MySQL user to use a compatible authentication method (mysql_native_password).
 
+Alternatively, run this SQL command directly in your MySQL client:
 
+```sql
+ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY 'Password123';
+FLUSH PRIVILEGES;
+```
 
+### 5. Set up the database
 
-How to Run the Project
+Run the setup script to create the database and import data:
 
-Development Mode:
+```bash
+npm run setup-db
+```
+
+This will:
+- Create the database if it doesn't exist
+- Create the required tables
+- Import sample data from `data.json`
+
+You can verify the database setup by running:
+
+```bash
+npm run verify-db
+```
+
+### 6. Run the development server
+
+```bash
 npm run dev
+```
 
+Open [http://localhost:3000](http://localhost:3000) in your browser to see the application.
 
-This starts the development server at http://localhost:3000.
-Open your browser and navigate to http://localhost:3000 to view the application.
+## Troubleshooting
 
+### MySQL Authentication Error
 
-Production Build:
-npm run build
+If you see an error like:
+```
+ER_NOT_SUPPORTED_AUTH_MODE: Client does not support authentication protocol requested by server
+```
 
+This means your MySQL server is using a newer authentication method not supported by the Node.js client. Run:
 
-This generates an optimized production build in the .next directory.
+```bash
+npm run fix-auth
+```
 
+### Connection Issues
 
-Start Production Server:
-npm run start
+If you still face connection issues:
 
+1. Make sure MySQL is running
+2. Verify your credentials are correct
+3. Try connecting to MySQL manually to ensure it's working:
+   ```
+   mysql -u root -pAlmariAlmari5
+   ```
+4. Check if the `moviehouse` database exists:
+   ```
+   SHOW DATABASES;
+   ```
 
-This runs the production build, typically at http://localhost:3000.
+## Project Structure
 
+- `pages/` - Next.js pages and API routes
+  - `api/` - API routes for backend functionality
+    - `movies/` - Movie-related endpoints
+    - `directors/` - Director-related endpoints
+    - `genres/` - Genre-related endpoints
+  - Various pages for the UI
+- `components/` - Reusable React components
+- `contexts/` - React Context API providers
+- `lib/` - Utility functions
+  - `db.js` - Database connection
+  - `setupDb.js` - Database setup functions
+- `public/` - Static assets
+- `styles/` - Global styles
+- `scripts/` - Utility scripts for database setup and verification
 
+## API Routes
 
-Project Structure
-movie-house/
-├── data.json              # Movie, genre, and director data
-├── pages/                 # Next.js pages
-│   ├── api/               # API routes for data fetching
-│   ├── movies/            # Dynamic and nested movie routes
-│   ├── genres/            # Genre-related pages
-│   ├── help/              # Help pages with catch-all routes
-│   ├── 404.js             # Custom 404 page
-│   ├── directors.js       # Directors page (CSR)
-│   ├── genres.js          # Genres page (SSR)
-│   ├── index.js           # Home page
-│   └── movies.js          # Movies page
-├── styles/                # CSS styles
-│   └── globals.css        # Global styles with Tailwind CSS
-├── tailwind.config.js     # Tailwind CSS configuration
-└── package.json           # Project dependencies and scripts
+- `GET /api/movies` - Get all movies
+- `GET /api/movies/[id]` - Get a specific movie by ID
+- `GET /api/directors` - Get all directors
+- `GET /api/directors/[id]` - Get a specific director and their movies
+- `GET /api/genres` - Get all genres
+- `GET /api/genres/[id]/movies` - Get movies by genre ID
 
-Notes
+## Theme Context
 
-The application uses Incremental Static Regeneration (ISR) with a revalidation period of 60 seconds for static pages.
-Ensure the data.json file is correctly formatted and placed in the root directory to avoid runtime errors.
-For production deployment, consider hosting on platforms like Vercel, which is optimized for Next.js applications.
+The application uses React Context API for global theme management. Users can toggle between dark and light modes, and their preference is stored in localStorage for persistence.
+
+## Acknowledgements
+
+This project was created as part of the Advanced Programming course assignment.
 
